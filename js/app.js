@@ -9,7 +9,7 @@
   // Signed-in state
   let session = null, profile = null;
   let charts = [];
-  let renderId = 0;
+  let renderId = 0, shownRoute = '';
   const filters = { cause: '', type: '', remote: false, all: false };
 
   // ---------- helpers ----------
@@ -85,8 +85,10 @@
     });
     clearCharts();
     const el = $('#view');
-    if (PRIVATE.includes(route) && !session) return gate(el, route);
-    el.innerHTML = '<p class="loading">Loading…</p>';
+    if (PRIVATE.includes(route) && !session) { shownRoute = ''; return gate(el, route); }
+    // Re-rendering the same page (a filter or radius change) keeps it on screen instead of flashing "Loading…"
+    if (route !== shownRoute) el.innerHTML = '<p class="loading">Loading…</p>';
+    shownRoute = route;
     try {
       await ROUTES[route](el, () => id === renderId);
     } catch (e) {
