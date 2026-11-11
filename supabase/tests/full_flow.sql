@@ -14,10 +14,10 @@ insert into r(step,result) values ('1 trigger made 2 profiles', (select count(*)
 -- nonprofit creates org + project
 select set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-0000000000b2","role":"authenticated"}',true);
 set local role authenticated;
-insert into orgs (id, owner_id, name, cause, is_national, lat, lon) values ('00000000-0000-0000-0000-0000000000c3','00000000-0000-0000-0000-0000000000b2','Sim Club','Arts and music',false,30.28,-97.73);
+insert into orgs (id, owner_id, name, org_type, cause, is_national, lat, lon) values ('00000000-0000-0000-0000-0000000000c3','00000000-0000-0000-0000-0000000000b2','Sim Club','school','Arts and music',false,30.28,-97.73);
 insert into projects (id, org_id, title, description, skills, hours, weeks, min_age, remote, cause, deliverables)
 values ('00000000-0000-0000-0000-0000000000d4','00000000-0000-0000-0000-0000000000c3','Design flyers','Need flyers','{design}',6,2,13,true,'Arts and music','{Flyer}');
-insert into r(step,result) values ('2 org posted project (custom cause)', 'ok');
+insert into r(step,result) values ('2 school club posted project (custom cause), type saved as', (select org_type from orgs where id='00000000-0000-0000-0000-0000000000c3'));
 with u as (update projects set title='hacked' where is_example returning 1) insert into r(step,result) select '3 org edits example listings (want 0)', count(*)::text from u;
 
 -- student applies

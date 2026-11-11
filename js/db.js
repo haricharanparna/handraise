@@ -12,7 +12,7 @@ window.HR = window.HR || {};
     return data;
   }
 
-  const ORG_FIELDS = 'id, name, cause, blurb, url, address, city, state, zip, lat, lon, image_url, is_national, is_example, owner_id';
+  const ORG_FIELDS = 'id, name, cause, blurb, url, address, city, state, zip, lat, lon, image_url, is_national, is_example, org_type, owner_id';
   const PROJECT_FIELDS = '*, org:orgs(' + ORG_FIELDS + ')';
 
   const db = {

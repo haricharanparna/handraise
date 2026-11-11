@@ -3,14 +3,14 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const { SKILLS, CAUSES, HOUR_VALUE } = HR.data;
+  const { SKILLS, CAUSES, ORG_TYPES, HOUR_VALUE } = HR.data;
   const db = HR.db;
 
   // Signed-in state
   let session = null, profile = null;
   let charts = [];
   let renderId = 0;
-  const filters = { cause: '', remote: false, all: false };
+  const filters = { cause: '', type: '', remote: false, all: false };
 
   // ---------- helpers ----------
   const sum = a => a.reduce((s, v) => s + Number(v), 0);
@@ -22,6 +22,10 @@
   // Causes are one of CAUSES' keys, or text a nonprofit typed in under "Other"
   const causeLabel = c => CAUSES[c]?.label || c || '';
   const causeTag = c => `<span class="tag cause">${esc(causeLabel(c))}</span>`;
+  // What kind of place an organization is (nonprofit, public library, hospital…), shown on every listing
+  const typeOf = o => o?.org_type || 'nonprofit';
+  const typeLabel = o => ORG_TYPES[typeOf(o)] || ORG_TYPES.nonprofit;
+  const typeTag = o => `<span class="tag kind">${esc(typeLabel(o))}</span>`;
   // Red asterisk for required fields
   const REQ = '<span class="req" aria-hidden="true">*</span>';
   // Cause dropdown with an "Other" choice that reveals a text box. selected may be a custom cause.
@@ -66,7 +70,7 @@
     org: orgHome, 'org/new': orgNew, about
   };
   const PRIVATE = ['me', 'me/profile', 'me/certificate', 'org', 'org/new'];
-  const TITLES = { browse: 'Find projects', orgs: 'Nonprofits near you', impact: 'Community impact', about: 'How it works', signin: 'Sign in', signup: 'Create account',
+  const TITLES = { browse: 'Find projects', orgs: 'Places to volunteer near you', impact: 'Community impact', about: 'How it works', signin: 'Sign in', signup: 'Create account',
     me: 'My volunteering', 'me/profile': 'My profile', 'me/certificate': 'My certificate', org: 'For nonprofits', 'org/new': 'Post a project' };
 
   async function render() {
@@ -164,7 +168,7 @@
     el.innerHTML = `<div class="locbar">
       <div class="locbar-now">${loc ? `Showing results within
         <select data-radius aria-label="Search radius">${HR.data.RADII.map(r => `<option value="${r}" ${r === loc.radius ? 'selected' : ''}>${r} miles</option>`).join('')}</select>
-        of <b>${esc(loc.label)}</b>` : '<b>Set your location</b> to see nonprofits near you.'}
+        of <b>${esc(loc.label)}</b>` : '<b>Set your location</b> to see places to volunteer near you.'}
         <button type="button" class="linkish small" data-change>${loc ? 'Change' : ''}</button></div>
       <div data-widget ${loc ? 'hidden' : ''}></div></div>`;
     const w = $('[data-widget]', el);
@@ -190,7 +194,7 @@
           <p class="lead">Handraise matches what students are already good at, like design, translation, coding and tutoring, to small projects at nonprofits near them, then turns the work into verified service hours.</p>
           <div class="btn-row" style="margin-top:22px">
             <a class="btn primary lg" href="${session ? '#browse' : '#signup'}">${session ? 'Find a project' : 'Join as a student'}</a>
-            <a class="btn lg" href="#orgs">Nonprofits near me</a>
+            <a class="btn lg" href="#orgs">Places near me</a>
           </div>
         </div>
         <div class="figures">
@@ -201,9 +205,9 @@
         </div>
       </section>
 
-      <div class="section-title"><h2>${loc ? `Near ${esc(loc.label)}` : 'Near you'}</h2><a class="small" href="#orgs">All nonprofits near you</a></div>
-      ${loc ? (near.length ? `<div class="orgrow">${near.slice(0, 4).map(({ o, d }) => `<a class="orgtile" href="#orgs">${orgThumb(o, 'wide')}<b>${esc(o.name)}</b><span>${distLabel(d)} · ${esc(causeLabel(o.cause))}</span></a>`).join('')}</div>`
-        : `<p class="muted">No nonprofits on Handraise within ${loc.radius} miles yet. Try a bigger radius on the <a href="#orgs">nonprofits page</a>, or help from anywhere with an online program below.</p>`)
+      <div class="section-title"><h2>${loc ? `Near ${esc(loc.label)}` : 'Near you'}</h2><a class="small" href="#orgs">All places near you</a></div>
+      ${loc ? (near.length ? `<div class="orgrow">${near.slice(0, 4).map(({ o, d }) => `<a class="orgtile" href="#orgs">${orgThumb(o, 'wide')}<b>${esc(o.name)}</b><span>${distLabel(d)} · ${esc(typeLabel(o))}</span></a>`).join('')}</div>`
+        : `<p class="muted">No places to volunteer on Handraise within ${loc.radius} miles yet. Try a bigger radius on the <a href="#orgs">places page</a>, or help from anywhere with an online program below.</p>`)
         : '<div id="home-loc"></div>'}
 
       <div class="section-title"><h2>The problem</h2></div>
@@ -231,7 +235,7 @@
       <div class="notice green" style="margin-top:20px">Curious how projects are ranked, or how the database keeps hours honest? <a href="#about">Try the matching engine and project builder</a>. No account needed.</div>
 
       <div class="section-title"><h2>Help from anywhere</h2></div>
-      <ul class="orglist">${orgs.filter(o => o.is_national).map(o => `<li><a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.name)}</a><span>${esc(o.blurb)}</span></li>`).join('')}</ul>`;
+      <ul class="orglist">${orgs.filter(o => o.is_national).map(o => `<li><a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.name)}</a> ${typeTag(o)}<span>${esc(o.blurb)}</span></li>`).join('')}</ul>`;
 
     const hl = $('#home-loc');
     if (hl) locBar(hl, null, render);
@@ -263,7 +267,7 @@
             <label class="f" style="flex:2">First name${REQ}<input name="first" autocomplete="given-name" required maxlength="30"></label>
             <label class="f" data-student>Age${REQ}<input name="age" type="number" inputmode="numeric" min="13" max="25" required></label>
           </div>
-          <div class="f" data-student><b class="small">Location</b> <span class="hint small">(optional, used to find nonprofits near you)</span>
+          <div class="f" data-student><b class="small">Location</b> <span class="hint small">(optional, used to find places to volunteer near you)</span>
             <div id="su-loc" style="margin-top:6px"></div>
             <p class="xs muted" style="margin:6px 0 0">We store only an approximate area (about 1 km), never your exact address.</p></div>` : ''}
         <label class="f">Email${REQ}<input name="email" type="email" autocomplete="email" required></label>
@@ -323,29 +327,41 @@
     };
   }
 
-  // ================= NONPROFITS NEAR YOU =================
+  // ================= PLACES TO VOLUNTEER NEAR YOU =================
   async function nearbyOrgs(el, live) {
     const orgs = await db.orgs();
     if (!live()) return;
     const loc = myLoc();
     const local = orgs.filter(o => !o.is_national).map(o => ({ o, d: HR.match.distanceTo(loc, o) }));
-    const near = loc ? local.filter(x => x.d <= loc.radius).sort((a, b) => a.d - b.d) : [];
+    const allNear = loc ? local.filter(x => x.d <= loc.radius).sort((a, b) => a.d - b.d) : [];
+    const online = orgs.filter(o => o.is_national).map(o => ({ o, d: null }));
+    // Kind-of-place filter, with counts for what's near you and online
+    const counts = {};
+    [...allNear, ...online].forEach(({ o }) => { counts[typeOf(o)] = (counts[typeOf(o)] || 0) + 1; });
+    if (filters.type && !counts[filters.type]) filters.type = '';
+    const keep = x => !filters.type || typeOf(x.o) === filters.type;
+    const near = allNear.filter(keep);
+    const typeChips = `<div class="chips" role="group" aria-label="Kind of place">
+      <button type="button" class="chip" data-type="" aria-pressed="${!filters.type}">All <span>${allNear.length + online.length}</span></button>
+      ${Object.keys(ORG_TYPES).filter(k => counts[k]).map(k => `<button type="button" class="chip" data-type="${k}" aria-pressed="${filters.type === k}">${esc(ORG_TYPES[k])} <span>${counts[k]}</span></button>`).join('')}</div>`;
     const card = ({ o, d }) => `<article class="ocard">
         ${orgThumb(o, 'card')}
         <div>
-          <div class="org-cause">${esc(causeLabel(o.cause))}${o.is_example ? ' · example listing' : ''}</div>
+          <div class="org-kind">${typeTag(o)}<span class="org-cause">${esc(causeLabel(o.cause))}${o.is_example ? ' · example listing' : ''}</span></div>
           <h3>${esc(o.name)}</h3>
           <p>${esc(o.blurb || '')}</p>
           <div class="facts">${orgFacts(o, d)}</div>
           <div class="btn-row" style="margin-top:10px"><a class="btn sm" href="#browse">See ${o.projects?.[0]?.count || 0} project idea${o.projects?.[0]?.count === 1 ? '' : 's'}</a>${o.url ? `<a class="btn quiet sm" href="${esc(o.url)}" target="_blank" rel="noopener">Volunteer page ↗</a>` : ''}</div>
         </div></article>`;
     el.innerHTML = `
-      <div class="page-head"><div><h1>Nonprofits near you</h1><p>Real organizations, with their address, distance and website. Listings marked “example listing” aren't affiliated with Handraise. Contact them through their own volunteer page.</p></div></div>
+      <div class="page-head"><div><h1>Places to volunteer near you</h1><p>Nonprofits, public libraries, parks departments, hospitals, museums and government programs, with their address, distance and website. Each one is labeled with what kind of place it is. Listings marked “example listing” aren't affiliated with Handraise. Contact them through their own volunteer page.</p></div></div>
       <div id="locbar"></div>
+      ${typeChips}
       ${loc ? (near.length ? `<div class="ocards">${near.map(card).join('')}</div>`
-        : `<p class="empty">No nonprofits on Handraise within ${loc.radius} miles of ${esc(loc.label)} yet. Try a larger radius, or help from anywhere with an online program below.</p>`) : ''}
+        : `<p class="empty">No ${filters.type ? esc(ORG_TYPES[filters.type].toLowerCase()) + ' listings' : 'places to volunteer'} on Handraise within ${loc.radius} miles of ${esc(loc.label)} yet. Try a larger radius, or help from anywhere with an online program below.</p>`) : ''}
       <div class="section-title"><h2>Help from anywhere</h2><span class="small muted">Online programs open to students across the U.S.</span></div>
-      <div class="ocards">${orgs.filter(o => o.is_national).map(o => card({ o, d: null })).join('')}</div>`;
+      <div class="ocards">${online.filter(keep).map(card).join('') || '<p class="empty">No online programs of this kind yet.</p>'}</div>`;
+    $$('[data-type]', el).forEach(b => b.onclick = () => { filters.type = b.dataset.type; render(); });
     locBar($('#locbar'), loc, render);
   }
 
@@ -360,6 +376,7 @@
       .filter(p => loc || p.org?.is_national || !p.org?.is_example || appBy.has(p.id))
       .map(p => ({ p, m: HR.match.score(profile, p, loc) }));
     if (filters.cause) list = list.filter(x => x.p.cause === filters.cause);
+    if (filters.type) list = list.filter(x => typeOf(x.p.org) === filters.type);
     if (filters.remote) list = list.filter(x => x.p.remote);
     const tooYoung = list.filter(x => !x.m.ok && x.m.why.startsWith('Ages')).length;
     if (!filters.all) list = list.filter(x => x.m.ok);
@@ -369,7 +386,7 @@
 
     el.innerHTML = `
       <div class="page-head"><div><h1>Find a project</h1>
-        <p>${scored ? 'Ranked by how well each project fits your skills, causes, schedule and location.' : 'Small, skills-based projects at nonprofits near you and online.'}</p></div></div>
+        <p>${scored ? 'Ranked by how well each project fits your skills, causes, schedule and location.' : 'Small, skills-based projects at nonprofits, libraries, parks, hospitals and more, near you and online.'}</p></div></div>
       <div id="locbar"></div>
       ${!session ? '<div class="notice green"><a href="#signup">Create an account</a> and add your skills to see how well each project fits you.</div>'
         : !scored ? '<div class="notice green"><a href="#me/profile">Add your skills</a> to see your fit for each project.</div>' : ''}
@@ -380,6 +397,7 @@
             <div class="tags" style="margin-bottom:10px">${skillTags(profile.skills)}</div>
             <a class="small" href="#me/profile">Edit profile</a><hr>` : ''}
           <label class="f">Cause<select id="f-cause"><option value="">All causes</option>${[...Object.keys(CAUSES), ...new Set(projects.map(p => p.cause).filter(c => c && !CAUSES[c]))].map(k => `<option value="${esc(k)}" ${filters.cause === k ? 'selected' : ''}>${esc(causeLabel(k))}</option>`).join('')}</select></label>
+          <label class="f">Kind of place<select id="f-type"><option value="">All kinds</option>${Object.entries(ORG_TYPES).filter(([k]) => k === filters.type || projects.some(p => typeOf(p.org) === k)).map(([k, v]) => `<option value="${k}" ${filters.type === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></label>
           <label class="small" style="display:flex;align-items:center;margin-bottom:8px"><input type="checkbox" id="f-remote" ${filters.remote ? 'checked' : ''}>Remote only</label>
           ${profile?.age ? `<label class="small" style="display:flex;align-items:center"><input type="checkbox" id="f-all" ${filters.all ? 'checked' : ''}>Show projects for older students (${tooYoung})</label>` : ''}
           ${scored ? '<p class="xs muted" style="margin-top:18px">Fit = 50% skills · 20% cause · 15% time · 10% distance · 5% skills you want to learn.</p>' : ''}
@@ -392,6 +410,7 @@
 
     locBar($('#locbar'), loc, render);
     $('#f-cause').onchange = e => { filters.cause = e.target.value; render(); };
+    $('#f-type').onchange = e => { filters.type = e.target.value; render(); };
     $('#f-remote').onchange = e => { filters.remote = e.target.checked; render(); };
     const fa = $('#f-all'); if (fa) fa.onchange = e => { filters.all = e.target.checked; render(); };
     $$('[data-apply]', el).forEach(b => b.onclick = () => act(b, async () => {
@@ -416,7 +435,7 @@
     return `<article class="project ${m.ok ? '' : 'dim'}">
       ${orgThumb(org)}
       <div>
-        <div class="org"><b>${esc(org.name)}</b> ${causeTag(p.cause)}${p.is_example ? '<span class="tag example">Example listing</span>' : ''}</div>
+        <div class="org"><b>${esc(org.name)}</b> ${typeTag(org)} ${causeTag(p.cause)}${p.is_example ? '<span class="tag example">Example listing</span>' : ''}</div>
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.description)}</p>
         <div class="facts">${orgFacts(org, m.dist)}</div>
@@ -503,7 +522,7 @@
           <label class="f">Age${REQ}<input name="age" type="number" min="13" max="25" value="${p.age ?? ''}" required></label>
           <label class="f">Grade<select name="grade">${['7th', '8th', '9th', '10th', '11th', '12th', 'College'].map(g => `<option ${g === p.grade ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
         </div>
-        <fieldset><legend>Location <span class="hint">Used to find nonprofits near you. Only an approximate area is saved.</span></legend>
+        <fieldset><legend>Location <span class="hint">Used to find places to volunteer near you. Only an approximate area is saved.</span></legend>
           <div id="pf-loc"></div>
           <label class="f" style="margin-top:10px;max-width:240px">Search within<select name="radius_miles">${HR.data.RADII.map(r => `<option value="${r}" ${r === p.radius_miles ? 'selected' : ''}>${r} miles</option>`).join('')}</select></label>
         </fieldset>
@@ -626,6 +645,7 @@
       <form id="of" class="panel" style="margin-top:18px">
         <p class="xs muted" style="margin:0 0 14px">Fields marked ${REQ} are required.</p>
         <label class="f">Organization name${REQ}<input name="name" required maxlength="120"></label>
+        <label class="f">Type of organization${REQ}<select name="org_type" required>${Object.entries(ORG_TYPES).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select></label>
         ${causeField('Main cause')}
         <label class="f">What you do <span class="hint">(one or two sentences)</span><textarea name="blurb" rows="3" maxlength="400"></textarea></label>
         <label class="f">Street address<span id="addr-req">${REQ}</span> <span class="hint">(so nearby students can find you)</span><input name="address" required placeholder="123 Main St, Austin, TX 78701" autocomplete="street-address"></label>
@@ -649,7 +669,7 @@
           place = await HR.location.geocodeAddress(f.address.value.trim());
           if (!place) throw new Error('We couldn\'t find that address. Include the city, state and ZIP.');
         }
-        await db.createOrg({ owner_id: uid(), name: f.name.value.trim(), cause, blurb: f.blurb.value.trim(),
+        await db.createOrg({ owner_id: uid(), name: f.name.value.trim(), org_type: f.org_type.value, cause, blurb: f.blurb.value.trim(),
           url: /^https:\/\//.test(url) ? url : null, image_url: /^https:\/\//.test(img) ? img : null,
           is_national: f.online.checked, address: place ? f.address.value.trim() : null,
           city: place?.city || null, state: place?.state || null, zip: place?.zip || null, lat: place?.lat ?? null, lon: place?.lon ?? null });
@@ -802,7 +822,7 @@
         </ul>
         <ul class="checklist">
           <li><b>Nonprofits see only their applicants.</b> A student's profile is shared only with nonprofits they applied to, and visitors who aren't signed in see no personal information.</li>
-          <li><b>Real organizations, labeled honestly.</b> The ${new Set(projects.filter(p => p.is_example).map(p => p.org_id)).size} real nonprofits are example listings with links to their own volunteer pages. The database blocks applications to them.</li>
+          <li><b>Real organizations, labeled honestly.</b> The ${new Set(projects.filter(p => p.is_example).map(p => p.org_id)).size} real organizations (nonprofits, public libraries, parks departments, hospitals, museums and government programs) are example listings with links to their own volunteer pages, and each is labeled with what kind of place it is. The database blocks applications to them.</li>
           <li><b>Public totals only.</b> The Impact page uses a database function that returns totals, never names. <a href="privacy.html">Privacy policy</a></li>
         </ul>
       </div>

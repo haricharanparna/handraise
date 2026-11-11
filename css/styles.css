@@ -124,6 +124,16 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 24px 0; }
 .tag.ok { border-color: transparent; background: var(--green-soft); color: var(--green); }
 .tag.wait { border-color: transparent; background: var(--amber-soft); color: var(--amber); }
 .tag.example { border-style: dashed; }
+/* What kind of place an organization is: nonprofit, public library, hospital… */
+.tag.kind { border-color: var(--green); color: var(--green); font-weight: 600; }
+.orglist li span.tag { display: inline-block; font-size: .72rem; margin-left: 4px; vertical-align: 1px; }
+.org-kind { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.chip { font: inherit; font-size: .86rem; padding: 5px 12px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface); color: var(--ink-2); cursor: pointer; }
+.chip span { color: var(--muted); font-variant-numeric: tabular-nums; margin-left: 2px; }
+.chip:hover { border-color: var(--ink-2); }
+.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--green-ink); }
+.chip[aria-pressed="true"] span { color: inherit; opacity: .8; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* ---------- forms ---------- */
@@ -154,6 +164,7 @@ legend { font-weight: 600; font-size: .875rem; padding: 0; margin-bottom: 6px; }
 .btn.lg { padding: 12px 20px; font-size: 1rem; }
 .btn:disabled { opacity: .5; cursor: default; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn-row .btn { max-width: 100%; white-space: normal; text-align: center; }
 .linkish { background: none; border: 0; color: var(--green); font: inherit; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- projects ---------- */

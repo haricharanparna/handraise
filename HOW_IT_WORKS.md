@@ -39,7 +39,9 @@ It looks for about 140 phrases across 17 skills ("flyer" and "poster" → graphi
 - Nonprofit addresses are geocoded with OpenStreetMap Nominatim when they register.
 
 ## 5. Example listings
-The 66 real nonprofits and online programs have `is_example = true` and no owner. The database blocks applications to them and blocks anyone from editing them. On screen they say "Example listing" and link to the organization's real volunteer page.
+The 100 real organizations and online programs have `is_example = true` and no owner. The database blocks applications to them and blocks anyone from editing them. On screen they say "Example listing" and link to the organization's real volunteer page.
+
+Not every place to volunteer is a nonprofit. Each organization has an `org_type` (nonprofit, public library, parks department, hospital, museum, school, government program or university research), and every listing shows it as a label. Organizations that sign up pick their type.
 
 ## 6. Certificate and impact
 - The certificate counts **verified** hours only. The verification ID is a short hash of the verified log IDs and the total.
@@ -52,6 +54,6 @@ The 66 real nonprofits and online programs have `is_example = true` and no owner
 1. *How do you stop fake hours?* Only the nonprofit can verify, and that's enforced by row-level security in the database.
 2. *Is student data safe?* First names only. Profiles are visible only to the student and to nonprofits they applied to. Signed-out users see no personal data.
 3. *Where's the STEM/AI?* The weighted recommendation engine, the related-skills graph, haversine distance, the NLP project builder, and the database security design.
-4. *Are those real nonprofits?* Yes. They're real U.S. organizations, and our script geocoded every address and checked every website. They're shown as labeled example listings. We're not affiliated, and they link to the real volunteer pages. Any nonprofit can sign up and post.
+4. *Are those real nonprofits?* They're real U.S. organizations: 63 nonprofits plus libraries, parks departments, hospitals, museums and government programs, each labeled with what it is. Our script geocoded every address and checked every website. They're shown as labeled example listings. We're not affiliated, and they link to the real volunteer pages. Any nonprofit can sign up and post.
 5. *How does location work, and is it safe?* It's opt-in, rounded to about 1 km, and used only to measure distance. Nonprofits never see a student's location.
 6. *How does it scale?* Static hosting plus Supabase's free tier. Next: school sign-in, parent consent, and counselor views.

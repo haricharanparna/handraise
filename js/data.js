@@ -44,11 +44,23 @@ window.HR = window.HR || {};
     arts: { label: 'Arts', color: '#8a6a4f' }
   };
 
+  // What kind of place each organization is. Not every place to volunteer is a nonprofit.
+  const ORG_TYPES = {
+    nonprofit: 'Nonprofit',
+    library: 'Public library',
+    parks: 'Parks department',
+    hospital: 'Hospital',
+    museum: 'Museum',
+    school: 'School',
+    government: 'Government program',
+    research: 'University research'
+  };
+
   // Independent Sector's estimated value of a U.S. volunteer hour (2023 national figure)
   const HOUR_VALUE = 33.49;
 
   // Search radius choices (miles)
   const RADII = [10, 25, 50, 100];
 
-  HR.data = { SKILLS, CAUSES, related, HOUR_VALUE, RADII };
+  HR.data = { SKILLS, CAUSES, ORG_TYPES, related, HOUR_VALUE, RADII };
 })(window.HR);

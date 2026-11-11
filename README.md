@@ -2,7 +2,7 @@
 
 **Skills-based volunteering for students.** Handraise matches what students are already good at (design, translation, coding, tutoring) to small projects at local nonprofits, then turns the work into verified service hours.
 
-Built for **STEMergent Hacks 2026** (Hackathon Pathway). Features 60 real nonprofits in 22 states plus DC, and 6 national online programs.
+Built for **STEMergent Hacks 2026** (Hackathon Pathway). Features 100 real places to volunteer in 23 states plus DC and online: 63 nonprofits, plus public libraries, parks departments, hospitals, museums, and government and university programs.
 
 ## The problem
 - **92% of U.S. nonprofits** have annual budgets under $1 million (National Council of Nonprofits), so most can't hire a designer, developer or translator.
@@ -12,7 +12,7 @@ Built for **STEMergent Hacks 2026** (Hackathon Pathway). Features 60 real nonpro
 ## Features
 - **Accounts:** students and nonprofits sign up with Google or with email and password (Supabase Auth). Students give their age (13+ only, enforced by the database).
 - **Opt-in location:** "Use my location" (browser GPS) or a city/ZIP. Only an approximate area (rounded to about 1 km) is stored. Students choose a 10, 25, 50 or 100 mile radius.
-- **Nonprofits near you:** each organization shows its photo, address (linked to Google Maps), distance and website. National online programs are open to everyone.
+- **Places near you:** nonprofits, public libraries, parks departments, hospitals, museums and government programs. Each one is labeled with what kind of place it is and shows its photo, address (linked to Google Maps), distance and website. Students can filter by kind of place here and on Find projects. National online programs are open to everyone.
 - **Age-aware:** students only see projects they're old enough for (with a toggle to see the rest).
 - **Explainable matching:** projects are ranked for each student by skills (with partial credit for related skills), causes, time, distance and growth, and every score lists its reasons.
 - **Project builder:** a nonprofit describes its need in plain words, and Handraise suggests skills, scope, timeline and deliverables, showing which words it used.
@@ -22,10 +22,10 @@ Built for **STEMergent Hacks 2026** (Hackathon Pathway). Features 60 real nonpro
 - **Impact dashboard:** live totals, hours by cause and week, and a skills-gap chart.
 - **How it works page:** try the matching engine and project builder without an account.
 - **Light and dark mode**, keyboard-friendly navigation and phone layouts.
-- **Real organizations:** 66 real U.S. nonprofits and online programs appear as *example listings* with example project ideas. Handraise is not affiliated with them, and example listings link to each organization's own volunteer page.
+- **Real organizations:** 100 real U.S. organizations and online programs appear as *example listings* with example project ideas. Handraise is not affiliated with them, and example listings link to each organization's own volunteer page.
 
 ## Where the nonprofit data comes from
-`scripts/build-orgs.mjs` takes our hand-researched list. It **geocodes every street address** with OpenStreetMap (most matched the organization's own building by name), **loads every website**, and saves each site's preview image. A few photos come from Wikipedia. Results are in `scripts/orgs.verified.json`.
+`scripts/build-orgs.mjs` takes our hand-researched list. It **geocodes every street address** with OpenStreetMap (most matched the organization's own building by name), **loads every website**, and saves each site's preview image. A few photos come from Wikipedia. Results are in `scripts/orgs.verified.json`. `scripts/build-places.mjs` does the same for the places that aren't nonprofits (`scripts/places.verified.json`).
 
 ## Run locally
 From inside this folder:
