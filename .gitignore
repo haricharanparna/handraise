@@ -1,0 +1,7 @@
+.claude/
+.netlify
+dist
+
+# Working notes (Devpost draft and video script), kept local
+SUBMISSION.md
+DEMO_SCRIPT.md

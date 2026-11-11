@@ -1,0 +1,10 @@
+# Only the app goes live; docs, scripts and seed data stay on this computer.
+# Refresh dist/ before each deploy: rm -rf dist && mkdir dist && cp -r index.html privacy.html icon.svg css js dist/
+[build]
+  publish = "dist"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

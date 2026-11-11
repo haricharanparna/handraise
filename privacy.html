@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · Handraise</title>
+  <meta name="description" content="What Handraise collects, who can see it, and how to delete it.">
+  <meta name="theme-color" content="#1f5a43">
+  <link rel="icon" href="icon.svg?v=hr11" type="image/svg+xml">
+  <script>
+    // Apply the saved theme before the page paints, so there's no flash of the wrong colors
+    try { var t = localStorage.getItem('hr.theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=hr11">
+  <style>
+    .policy { max-width: 720px; padding: 32px 0 48px; }
+    .policy h2 { margin-top: 32px; }
+    .policy li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./" aria-label="Handraise home"><img src="icon.svg?v=hr11" alt="" width="30" height="30">Handraise</a>
+    </div>
+  </header>
+
+  <main class="wrap policy">
+    <div class="eyebrow">Last updated November 10, 2026</div>
+    <h1>Privacy Policy</h1>
+    <p>Handraise helps students find skills-based volunteer projects at nonprofits and keeps a verified record of their hours. It's a student project built for STEMergent Hacks 2026. This page explains what we collect, who can see it, and how to delete it.</p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li><b>Account details:</b> your email address and, if you sign up with a password, a securely hashed version of it. We never see or store your password itself.</li>
+      <li><b>If you sign in with Google:</b> Google shares your name, email address and profile picture link. We use your first name on your profile. We don't get access to your Gmail, contacts, Drive or anything else in your Google account.</li>
+      <li><b>Student profile:</b> first name, age, grade, skills, skills you want to learn, causes you care about, hours per week, and whether you can help in person or remotely.</li>
+      <li><b>Approximate location (optional):</b> if you choose to share it, we save your location rounded to about 1 km (2 decimal places), plus a label like “Austin, TX” and your search radius. We never store your exact address.</li>
+      <li><b>Volunteering activity:</b> projects you apply to, whether you were accepted, and the hours you log with a short note.</li>
+      <li><b>Nonprofit accounts:</b> organization name, cause, description, street address, website and photo link. This information is public.</li>
+    </ul>
+
+    <h2>How we use it</h2>
+    <ul>
+      <li>To match students with projects that fit their skills, causes, schedule, age and location.</li>
+      <li>To let nonprofits review applicants and verify volunteer hours.</li>
+      <li>To create your volunteer certificate.</li>
+      <li>To show community totals on the Impact page. These are totals only, with no names.</li>
+    </ul>
+    <p>We don't sell your information, show ads, or use it for anything other than running Handraise.</p>
+
+    <h2>Who can see what</h2>
+    <ul>
+      <li><b>Your location</b> is visible only to you. Nonprofits can't see it, even if you apply to them.</li>
+      <li><b>Nonprofits you apply to</b> can see your profile (first name, age, grade, skills, causes and availability), but not your email or location, so they can decide whether the project fits. Nonprofits you haven't applied to can't see your profile.</li>
+      <li><b>Your hour logs</b> are visible to you and to the nonprofit running that project.</li>
+      <li><b>Visitors who aren't signed in</b> can see projects, nonprofits and community totals, but no one's personal information.</li>
+    </ul>
+    <p>These rules are enforced by the database itself (row-level security), not just by hiding buttons on the page.</p>
+
+    <h2>Services we use</h2>
+    <ul>
+      <li><b>Supabase</b> stores the database and handles sign-in.</li>
+      <li><b>Netlify</b> hosts the website.</li>
+      <li><b>Google</b> handles “Continue with Google” sign-in if you choose it.</li>
+      <li><b>OpenStreetMap (Nominatim)</b> and <b>Open-Meteo</b> turn a location or ZIP code into a city name and coordinates. Only the coordinates or the search text you type are sent to them.</li>
+      <li><b>Google Fonts</b>, <b>jsDelivr</b> and <b>cdnjs</b> deliver fonts and code libraries. Like any website, they can see your IP address when your browser loads these files.</li>
+    </ul>
+
+    <h2>Your browser</h2>
+    <p>If you set a location without signing in, it's saved only in your own browser (local storage) and never sent to our database. Signing in also stores a session in your browser so you stay signed in. We don't use advertising or tracking cookies.</p>
+
+    <h2>Age</h2>
+    <p>Handraise is for students ages 13 to 25. The database refuses to create accounts for anyone who says they are under 13. If you're under 18, check with a parent or guardian before volunteering in person.</p>
+
+    <h2>Deleting your information</h2>
+    <p>You can change or clear your profile and location at any time from <b>My volunteering → Profile</b>. To delete your account and everything connected to it, email <a href="mailto:haricharanparna@gmail.com">haricharanparna@gmail.com</a> from the address you signed up with. We'll delete it within 30 days.</p>
+
+    <h2>Changes</h2>
+    <p>If we change this policy, we'll update the date at the top of this page.</p>
+
+    <h2>Contact</h2>
+    <p>Questions? Email <a href="mailto:haricharanparna@gmail.com">haricharanparna@gmail.com</a>.</p>
+
+    <p style="margin-top:32px"><a class="btn" href="./">Back to Handraise</a></p>
+  </main>
+</body>
+</html>
