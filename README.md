@@ -2,7 +2,7 @@
 
 **Skills-based volunteering for students.** Handraise matches what students are already good at (design, translation, coding, tutoring) to small projects at local nonprofits, then turns the work into verified service hours.
 
-Built for **STEMergent Hacks 2026** (Hackathon Pathway). Features 100 real places to volunteer in 23 states plus DC and online: 63 nonprofits, plus public libraries, parks departments, hospitals, museums, and government and university programs.
+Features 100 real places to volunteer in 23 states plus DC and online: 63 nonprofits, plus public libraries, parks departments, hospitals, museums, and government and university programs.
 
 ## The problem
 - **92% of U.S. nonprofits** have annual budgets under $1 million (National Council of Nonprofits), so most can't hire a designer, developer or translator.

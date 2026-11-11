@@ -50,7 +50,7 @@ Not every place to volunteer is a nonprofit. Each organization has an `org_type`
 
 ---
 
-## Practice these judge questions
+## Practice these questions
 1. *How do you stop fake hours?* Only the nonprofit can verify, and that's enforced by row-level security in the database.
 2. *Is student data safe?* First names only. Profiles are visible only to the student and to nonprofits they applied to. Signed-out users see no personal data.
 3. *Where's the STEM/AI?* The weighted recommendation engine, the related-skills graph, haversine distance, the NLP project builder, and the database security design.

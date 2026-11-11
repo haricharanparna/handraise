@@ -4,7 +4,7 @@
 // Output: scripts/orgs.verified.json   Run: node scripts/build-orgs.mjs
 import { writeFile } from 'node:fs/promises';
 
-const UA = 'Handraise-student-hackathon/1.0 (STEMergent Hacks 2026)';
+const UA = 'Handraise/1.0 (student volunteering project)';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // [name, cause, street address ('' for national/online programs), website, one-line description]

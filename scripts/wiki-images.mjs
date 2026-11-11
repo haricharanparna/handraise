@@ -1,7 +1,7 @@
 // wiki-images.mjs: for orgs whose own site gave no preview image, look for a freely licensed
 // image on their Wikipedia article (official Wikipedia REST API). Only exact-ish title matches are used.
 import { readFile, writeFile } from 'node:fs/promises';
-const UA = { 'User-Agent': 'Handraise-student-hackathon/1.0 (STEMergent Hacks 2026)' };
+const UA = { 'User-Agent': 'Handraise/1.0 (student volunteering project)' };
 const file = new URL('./orgs.verified.json', import.meta.url);
 const orgs = JSON.parse(await readFile(file, 'utf8'));
 const norm = s => s.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\b(the|of|and)\b/g, '').replace(/\s+/g, ' ').trim();
